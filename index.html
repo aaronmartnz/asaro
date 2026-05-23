@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>ASARO · Estudio de luz · PATOlabs</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0a0b0e; --panel:rgba(18,20,26,.82); --panel-solid:#13151b;
@@ -17,10 +17,10 @@
     --chip:rgba(255,255,255,.05); --chip-h:rgba(255,255,255,.09);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);
+  html,body{height:100%;height:100dvh;overflow:hidden;background:var(--bg);color:var(--txt);
     font-family:'IBM Plex Mono',monospace;-webkit-font-smoothing:antialiased;
     overscroll-behavior:none;touch-action:none}
-  #app{display:flex;height:100vh;width:100vw}
+  #app{display:flex;height:100vh;height:100dvh;width:100vw}
 
   /* ---- stage ---- */
   #stage{flex:1;position:relative;min-width:0;background:
@@ -47,7 +47,7 @@
   .mobtab{display:none}
 
   /* ---- panels ---- */
-  .panel{width:300px;flex:0 0 300px;height:100vh;background:var(--panel);
+  .panel{width:300px;flex:0 0 300px;height:100vh;height:100dvh;background:var(--panel);
     backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
     display:flex;flex-direction:column;position:relative;z-index:6;
     transition:margin .32s cubic-bezier(.4,0,.2,1)}
@@ -55,13 +55,13 @@
   .panel.right{border-left:1px solid var(--line)}
   .panel.left.collapsed{margin-left:-300px}
   .panel.right.collapsed{margin-right:-300px}
-  .phead{display:flex;align-items:center;gap:8px;padding:15px 16px 12px;
+  .phead{display:flex;align-items:center;gap:8px;padding:10px 16px 8px;
     border-bottom:1px solid var(--line);flex:0 0 auto}
   .phead .ico{width:7px;height:18px;border-radius:0;background:var(--orange)}
   .panel.right .phead .ico{background:var(--teal)}
-  .phead .h{font-family:'Barlow Condensed';font-style:italic;font-weight:900;
-    font-size:19px;letter-spacing:.5px;flex:1}
-  .pbody{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 0 22px;
+  .phead .h{font-family:'IBM Plex Mono',monospace;font-style:normal;font-weight:700;
+    font-size:15px;letter-spacing:3px;text-transform:uppercase;flex:1}
+  .pbody{flex:1;overflow-y:auto;overflow-x:hidden;padding:2px 0 6px;
     scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
   .pbody::-webkit-scrollbar{width:5px}
   .pbody::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
@@ -77,7 +77,7 @@
 
   /* ---- sections ---- */
   .sec{border-bottom:1px solid var(--line2)}
-  .sec-h{display:flex;align-items:center;gap:7px;padding:11px 16px;cursor:pointer;
+  .sec-h{display:flex;align-items:center;gap:7px;padding:8px 16px;cursor:pointer;
     user-select:none;transition:.12s}
   .sec-h:hover{background:rgba(255,255,255,.025)}
   .sec-h .cv{color:var(--dim2);font-size:9px;transition:transform .2s}
@@ -85,16 +85,16 @@
   .sec-h .lab{font-size:10px;letter-spacing:2.5px;color:var(--dim);
     text-transform:uppercase;flex:1}
   .sec-h .badge{font-size:9.5px;color:var(--dim2)}
-  .sec-c{padding:4px 16px 14px;display:block}
+  .sec-c{padding:4px 16px 8px;display:block}
   .sec.closed .sec-c{display:none}
 
   /* ---- controls ---- */
   .row{display:flex;align-items:center;justify-content:space-between;
-    gap:10px;padding:6px 0}
+    gap:10px;padding:4px 0}
   .lab{font-size:11.5px;color:var(--dim)}
-  .ctrl{padding:7px 0}
+  .ctrl{padding:5px 0}
   .ctrl-lab{display:flex;justify-content:space-between;font-size:10.5px;
-    color:var(--dim);margin-bottom:7px;letter-spacing:.2px}
+    color:var(--dim);margin-bottom:4px;letter-spacing:.2px}
   .ctrl-lab b{color:var(--txt);font-weight:500;font-variant-numeric:tabular-nums}
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;
     border-radius:0;background:rgba(255,255,255,.12);outline:none;cursor:pointer}
@@ -170,6 +170,95 @@
   .env-th span{position:absolute;left:0;right:0;bottom:0;font-size:8px;text-align:center;
     color:#fff;background:rgba(0,0,0,.45);padding:1px 0;letter-spacing:.5px}
 
+  /* desktop radar pad */
+  #deskPad{position:relative;width:100%;aspect-ratio:1;margin:8px 0;
+    border-radius:50%;cursor:crosshair;touch-action:none;
+    background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.06), rgba(10,11,14,.5));
+    border:1px solid var(--line)}
+  .dp-ring{position:absolute;inset:10%;border-radius:50%;border:1px dashed rgba(255,255,255,.12)}
+  .dp-ring2{position:absolute;inset:28%;border-radius:50%;border:1px solid rgba(255,255,255,.06)}
+  .dp-cross{position:absolute;background:rgba(255,255,255,.07)}
+  .dp-cx{left:14%;right:14%;top:50%;height:1px}
+  .dp-cy{top:14%;bottom:14%;left:50%;width:1px}
+  .dp-sun{position:absolute;width:16px;height:16px;border-radius:50%;
+    background:var(--orange);box-shadow:0 0 14px 3px rgba(255,143,171,.5),0 0 0 3px rgba(255,143,171,.15);
+    transform:translate(-50%,-50%);left:50%;top:50%;pointer-events:none}
+
+  /* hide desktop radar (floating lightpad replaces it) */
+  #deskPad{display:none}
+
+  /* floating light controls (desktop — absolute inside #stage) */
+  #lightpad{display:block;position:absolute;right:16px;top:64px;width:128px;height:128px;
+    border-radius:50%;z-index:14;touch-action:none;cursor:crosshair;
+    background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.08), rgba(10,11,14,.58));
+    border:1px solid var(--line);backdrop-filter:blur(10px);
+    box-shadow:0 10px 34px rgba(0,0,0,.5)}
+  #lightpad .ring{position:absolute;inset:12px;border-radius:50%;border:1px dashed rgba(255,255,255,.15)}
+  #lightpad .ring2{position:absolute;inset:34px;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
+  #lightpad .cross{position:absolute;background:rgba(255,255,255,.09)}
+  #lightpad .cx{left:18px;right:18px;top:50%;height:1px}
+  #lightpad .cy{top:18px;bottom:18px;left:50%;width:1px}
+  #lightpad .sun{position:absolute;width:18px;height:18px;border-radius:50%;
+    background:var(--orange);box-shadow:0 0 14px 3px rgba(255,143,171,.5),0 0 0 3px rgba(255,143,171,.15);
+    transform:translate(-50%,-50%);left:50%;top:50%;pointer-events:none}
+  #lightpad .lab{position:absolute;left:0;right:0;bottom:-17px;text-align:center;
+    font-size:8px;letter-spacing:1.5px;color:var(--dim2)}
+
+  #fabAdd{display:flex;position:absolute;right:18px;top:216px;
+    width:44px;height:44px;border-radius:50%;z-index:16;align-items:center;justify-content:center;
+    background:var(--amber);color:#0a0b0e;border:0;cursor:pointer;
+    box-shadow:0 6px 18px rgba(255,230,161,.35),0 2px 6px rgba(0,0,0,.4);
+    transition:transform .16s, opacity .2s;line-height:1}
+  #fabAdd svg{width:34px;height:34px;display:block}
+  #fabAdd:active{transform:scale(.9)}
+  #fabAdd.hide{transform:scale(0);pointer-events:none}
+  #fabAdd .ct{position:absolute;top:-3px;right:-3px;min-width:16px;height:16px;padding:0 3px;
+    border-radius:8px;background:#0a0b0e;color:var(--amber);font-family:'IBM Plex Mono';
+    font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--amber)}
+
+  #padLights{display:flex;position:absolute;right:16px;top:272px;z-index:15;
+    flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+  #padLights.empty{display:none}
+  #padPills{display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:auto}
+  .pp-row{display:flex;align-items:center;gap:8px}
+  #padPills .pp{width:44px;height:44px;border-radius:50%;border:0;
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';
+    font-size:17px;font-weight:600;cursor:pointer;position:relative;
+    box-shadow:0 4px 14px rgba(0,0,0,.45);transition:transform .14s, box-shadow .14s}
+  #padPills .pp.sel{transform:scale(1.1);box-shadow:0 8px 22px rgba(0,0,0,.55)}
+  .pp-del{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.35);
+    background:transparent;color:rgba(255,255,255,.7);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:8px;
+    transition:.14s;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .pp-del:hover{border-color:rgba(255,255,255,.6);color:#fff}
+  .pp-del:active{transform:scale(.9)}
+  .pp-del svg{width:100%;height:100%}
+
+  #padQuick{display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:auto;margin-top:4px;touch-action:none}
+  #padQuick .vrange{position:relative;width:48px;height:160px;
+    background:#e9ecf2;border-radius:24px;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+  #padQuick .vrange input[type=range]{-webkit-appearance:none;appearance:none;
+    position:absolute;top:50%;left:50%;width:130px;height:3px;margin:0;
+    background:#2a2d35;border-radius:0;
+    transform:translate(-50%,-50%) rotate(-90deg);transform-origin:center}
+  #padQuick .vrange input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
+    width:18px;height:18px;border-radius:50%;background:#1a1c22;cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.3)}
+  #padQuick .vrange input[type=range]::-moz-range-thumb{width:18px;height:18px;
+    border-radius:50%;background:#1a1c22;border:0;cursor:pointer}
+  #padQuick .pqlab{font-size:7.5px;letter-spacing:1.5px;color:var(--dim2);text-transform:uppercase}
+
+  #lightEdit{display:none;position:absolute;right:16px;bottom:16px;left:auto;width:260px;z-index:18;
+    background:var(--panel-solid);border:1px solid var(--line);
+    padding:10px 14px 12px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+  #lightEdit.open{display:block}
+  #leHead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  #leHead select{flex:1;font-family:'IBM Plex Mono';font-size:11px;color:var(--txt);
+    background:var(--panel-solid);border:1px solid var(--line);padding:6px;outline:none}
+  #lightEdit .ctrl{padding:4px 0}
+  #lightEdit .ctrl-lab{margin-bottom:3px}
+
   /* loader */
   #load{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;
     flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -184,7 +273,7 @@
 
   /* mobile */
   /* ===== touch-mode chrome (hidden on desktop) ===== */
-  #sheet,#lightpad,#stash,#padLights,#padQuick,#fabAdd{display:none}
+  #sheet,#stash{display:none}
 
   @media(max-width:1024px){
     /* desktop panels become hidden; their sections get re-parented into the sheet */
@@ -218,7 +307,7 @@
       font-size:8px;letter-spacing:1.5px;color:var(--dim2)}
 
     /* ===== FAB add-light (under the light pad, top-right) ===== */
-    #fabAdd{display:flex;position:fixed;right:52px;top:216px;
+    #fabAdd{display:flex;position:fixed;right:10px;top:216px;
       width:56px;height:56px;border-radius:50%;z-index:26;align-items:center;justify-content:center;
       background:var(--amber);color:#0a0b0e;border:0;cursor:pointer;
       box-shadow:0 8px 24px rgba(255,230,161,.4),0 2px 8px rgba(0,0,0,.45);
@@ -232,58 +321,69 @@
       border:1.5px solid var(--amber)}
 
     /* ===== floating light cluster: vertical column of pills under the FAB ===== */
-    #padLights{display:flex;position:fixed;right:52px;top:288px;z-index:15;
-      flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+    #padLights{display:flex;position:fixed;right:10px;top:288px;z-index:15;
+      flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
     #padLights.empty{display:none}
-    #padPills{display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:auto}
+    #padPills{display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:auto}
     #padPills .pp{width:56px;height:56px;border-radius:50%;border:0;
       display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';
-      font-size:20px;font-weight:600;color:#0a0b0e;cursor:pointer;position:relative;
+      font-size:20px;font-weight:600;cursor:pointer;position:relative;
       box-shadow:0 6px 18px rgba(0,0,0,.5);transition:transform .14s, box-shadow .14s}
     #padPills .pp.sel{transform:scale(1.1);box-shadow:0 10px 26px rgba(0,0,0,.6)}
-    #padPills .pp .x{position:absolute;inset:0;border-radius:50%;background:rgba(10,11,14,.78);
-      color:#ff8fab;font-size:24px;display:none;align-items:center;justify-content:center}
-    #padPills .pp.sel .x.armed{display:flex}
-    #padPills .trash{width:30px;height:30px;border-radius:50%;background:rgba(12,13,17,.7);
-      border:1px solid var(--line);color:var(--dim);font-size:13px;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+    .pp-del{width:42px;height:42px;padding:10px}
 
     /* ===== vertical intensity slider (separate, lower-right) ===== */
-    #padQuick{position:fixed;right:61px;top:auto;bottom:calc(var(--peek,84px) + 24px);z-index:15;display:flex;flex-direction:column;
-      align-items:center;gap:8px;pointer-events:auto}
+    #padQuick{position:fixed;right:10px;top:auto;bottom:calc(var(--peek,84px) + 24px);z-index:15;
+      display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:auto;touch-action:none}
     #padQuick.empty{display:none}
-    #padQuick .vrange{position:relative;width:38px;height:156px}
-    #padQuick .vrange input[type=range]{position:absolute;top:50%;left:50%;width:156px;height:6px;margin:0;
-      background:rgba(255,255,255,.5);transform:translate(-50%,-50%) rotate(-90deg);transform-origin:center}
-    #padQuick .pqlab{font-size:8px;letter-spacing:1.5px;color:var(--dim2);text-transform:uppercase}
+    #padQuick .vrange{width:48px;height:170px;border-radius:24px}
+    #padQuick .vrange input[type=range]{width:140px}
+    #padQuick .vrange input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
+    #padQuick .vrange input[type=range]::-moz-range-thumb{width:22px;height:22px}
 
     /* ===== smart light switcher: size override in touch ===== */
     #lightsHead .pill{width:34px;height:34px}
 
+    /* ===== floating light editor ===== */
+    #lightEdit{display:none;position:fixed;left:0;right:0;z-index:28;
+      bottom:calc(var(--peek,104px) + env(safe-area-inset-bottom,0px));
+      background:var(--panel-solid);border-top:1px solid var(--line);
+      padding:10px 16px 12px;box-shadow:0 -8px 30px rgba(0,0,0,.5)}
+    #lightEdit.open{display:block}
+    #leHead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    #leHead select{flex:1;font-family:'IBM Plex Mono';font-size:12px;color:var(--txt);
+      background:var(--panel-solid);border:1px solid var(--line);padding:8px;outline:none}
+    #lightEdit .ctrl{padding:4px 0}
+    #lightEdit .ctrl-lab{margin-bottom:3px}
+
     /* ===== bottom sheet ===== */
     #sheet{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;
-      z-index:24;background:var(--panel);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+      z-index:24;background:var(--panel-solid);
       border:1px solid var(--line);border-bottom:0;border-radius:0;
       box-shadow:0 -24px 70px rgba(0,0,0,.55);height:88vh;height:88dvh;
-      transform:translateY(calc(100% - var(--peek,84px)));
+      padding-bottom:env(safe-area-inset-bottom,0px);
+      transform:translateY(calc(100% - var(--peek,84px) - env(safe-area-inset-bottom,0px)));
       transition:transform .4s cubic-bezier(.32,.72,0,1)}
     #sheet.dragging{transition:none}
     #grabRow{flex:0 0 auto;position:relative;display:flex;align-items:center;justify-content:center;
-      padding:9px 0 4px;touch-action:none}
-    #grab{cursor:grab;padding:2px 30px;touch-action:none}
-    #grab::before{content:'';display:block;width:44px;height:4px;border-radius:0;background:rgba(255,255,255,.22)}
-    #sheetDown{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-      width:30px;height:30px;border-radius:50%;background:var(--chip);border:1px solid var(--line);
-      color:var(--dim);font-size:16px;line-height:1;cursor:pointer;display:none;
-      align-items:center;justify-content:center;padding:0;transition:.14s}
-    #sheetDown:active{transform:translateY(-50%) scale(.88)}
-    #sheet.expanded #sheetDown{display:flex}
-    #mtabs{flex:0 0 auto;display:flex;gap:6px;padding:6px 14px 12px;border-bottom:1px solid var(--line2)}
-    #mtabs button{flex:1;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.5px;
-      color:var(--dim);background:var(--chip);border:1px solid transparent;padding:11px 6px;
+      padding:0;height:8px;touch-action:none}
+    #grab{position:absolute;top:-27px;left:50%;transform:translateX(-50%);
+      width:56px;height:28px;border-radius:28px 28px 0 0;
+      background:var(--panel-solid);
+      border:1px solid var(--line);border-bottom:0;
+      cursor:pointer;touch-action:none;
+      display:flex;align-items:center;justify-content:center;z-index:25}
+    #grab::before{content:'';display:block;width:9px;height:9px;
+      border-right:2px solid rgba(255,255,255,.4);border-bottom:2px solid rgba(255,255,255,.4);
+      transform:rotate(-135deg);margin-top:14px;transition:transform .3s, margin-top .3s}
+    #sheet.expanded #grab::before{transform:rotate(45deg);margin-top:6px}
+    #sheetDown{display:none}
+    #mtabs{flex:0 0 auto;display:flex;gap:6px;padding:6px 14px 10px;border-bottom:1px solid var(--line2)}
+    #mtabs button{flex:1;font-family:'IBM Plex Mono';font-size:13px;letter-spacing:.5px;
+      color:var(--dim);background:var(--chip);border:1px solid transparent;padding:14px 6px;
       border-radius:0;cursor:pointer;transition:.14s;display:flex;align-items:center;
       justify-content:center;gap:6px}
-    #mtabs button .ic{font-size:13px}
+    #mtabs button .ic{font-size:15px}
     #mtabs button.active{color:#0a0b0e;font-weight:600}
     #mtabs button[data-tab=luz].active{background:var(--orange);color:#0a0b0e}
     #mtabs button[data-tab=mat].active{background:var(--teal)}
@@ -299,16 +399,19 @@
     #scut .sc .d{font-size:11px}
     #scut:empty{display:none}
     #sheetBody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
-      padding:2px 2px calc(140px + env(safe-area-inset-bottom,0px));
+      padding:2px 2px calc(32px + env(safe-area-inset-bottom,0px));
       scrollbar-width:thin;scrollbar-color:var(--line2) transparent;
       overscroll-behavior:contain}
     #sheetBody .sec:first-child{border-top:0}
     #sheetBody .sec-c{padding-left:18px;padding-right:18px}
     #sheetBody .sec-h{padding-left:18px;padding-right:18px}
-    /* in touch mode hide the in-sheet add button + per-card extras (FAB + switcher replace them) */
+    /* in touch mode hide lights section (floating editor replaces it) */
     #sheetBody #addLight{display:none}
-    #sheetBody.luz .lcard:not(.sel){display:none}
-    #sheetBody.luz #lights .lcard .ltop [data-k=del]{display:none}
+    #sheetBody .sec[data-sec="lights"]{display:none}
+    #sheetBody .sec[data-sec="amb"]{display:none}
+
+    /* hide desktop radar on mobile */
+    #deskPad{display:none}
 
     /* bigger touch targets */
     input[type=range]{height:5px}
@@ -331,17 +434,28 @@
     .ltop select{font-size:12px;padding:8px 10px;max-height:none;overflow-y:visible}
     /* scrollable sections */
     .sec-c{max-height:none;overflow-y:visible}
+
+    /* horizontal scroll for HDRI thumbs */
+    .env-thumbs{display:flex;overflow-x:auto;gap:8px;margin-bottom:6px;
+      scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .env-thumbs::-webkit-scrollbar{display:none}
+    .env-th{flex:0 0 100px;height:42px}
+
+    /* horizontal scroll for preset chips */
+    .chips{flex-wrap:nowrap;overflow-x:auto;gap:6px;
+      scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .chips::-webkit-scrollbar{display:none}
     .pbody,.sec-c{-webkit-overflow-scrolling:touch}
   }
   @media(max-width:1024px) and (orientation:landscape){
     #sheet{height:94vh}
     #lightpad{top:56px;width:104px;height:104px}
-    #fabAdd{width:50px;height:50px;top:172px;right:43px}
-    #padLights{top:236px;right:43px}
+    #fabAdd{width:50px;height:50px;top:172px;right:10px}
+    #padLights{top:236px;right:10px}
     #padPills .pp{width:50px;height:50px;font-size:18px}
-    #padQuick{top:auto;bottom:8%;right:49px}
-    #padQuick .vrange{height:120px}
-    #padQuick .vrange input[type=range]{width:120px}
+    #padQuick{top:auto;bottom:8%;right:10px}
+    #padQuick .vrange{height:100px}
+    #padQuick .vrange input[type=range]{width:100px}
   }
 </style>
 </head>
@@ -393,6 +507,13 @@
         <div class="sec-h"><span class="cv">▼</span><span class="lab">Fuentes de luz</span><span class="badge" id="lcount">0/4</span></div>
         <div class="sec-c">
           <div id="lightsHead"></div>
+          <div id="deskPad">
+            <div class="dp-ring"></div>
+            <div class="dp-ring2"></div>
+            <div class="dp-cross dp-cx"></div>
+            <div class="dp-cross dp-cy"></div>
+            <div class="dp-sun" id="deskSun"></div>
+          </div>
           <div id="lights"></div>
           <button class="btn accent" id="addLight">+ Añadir luz</button>
         </div>
@@ -408,7 +529,6 @@
       </div>
 
     </div>
-    <div class="pfoot">ESTUDIO DE LUZ · PATOLABS</div>
     <div class="ptab" id="tabL">⟨</div>
   </aside>
 
@@ -440,18 +560,34 @@
       <div class="sun" id="padSun"></div>
       <div class="lab">LUZ KEY</div>
     </div>
+    <button id="fabAdd" title="Añadir luz">
+      <svg viewBox="1330 1380 290 290" xmlns="http://www.w3.org/2000/svg"><path fill="#0a0b0e" d="M1601.7,1547c-1.6-3.2-4.9-5.2-8.5-5.2h-34.1l25.9-37c2-2.9,2.3-6.7.6-9.8-1.6-3.1-4.9-5.1-8.4-5.1h-84.2v-84.2c0-5.2-4.3-9.5-9.5-9.5s-9.5,4.3-9.5,9.5v84.2h-84.2c-5.2,0-9.5,4.3-9.5,9.5s4.3,9.5,9.5,9.5h84.2v84.2c0,5.2,4.3,9.5,9.5,9.5s9.5-4.3,9.5-9.5v-84.2h66l-25.9,37c-2,2.9-2.3,6.7-.6,9.8,1.6,3.1,4.9,5.1,8.4,5.1h33.5l-56.7,76.7c-3.1,4.2-2.2,10.2,2,13.3,1.7,1.3,3.7,1.9,5.6,1.9,2.9,0,5.8-1.3,7.6-3.8l67.9-91.8c2.1-2.9,2.5-6.7.8-9.9Z"/></svg>
+      <span class="ct" id="fabCt">0</span>
+    </button>
+    <div id="padLights">
+      <div id="padPills"></div>
+      <div id="padQuick">
+        <div class="vrange"><input type="range" class="teal" id="padIntensity" min="0" max="5" step="0.01" value="1.6"></div>
+        <span class="pqlab">Intens.</span>
+      </div>
+    </div>
+    <div id="lightEdit">
+      <div id="leHead">
+        <div class="swatch" id="leColor"><input type="color" id="leColorIn" value="#fff1da"></div>
+        <select id="leType">
+          <option value="dir">Direccional</option>
+          <option value="point">Puntual</option>
+          <option value="spot">Spot</option>
+        </select>
+        <button class="ib" id="leShadow" title="Sombra">◐</button>
+        <button class="ib" id="leClose" title="Cerrar">✕</button>
+      </div>
+      <div class="ctrl"><div class="ctrl-lab">Intensidad <b id="leIntVal">1.60</b></div>
+        <input type="range" id="leInt" min="0" max="5" step="0.01" value="1.6"></div>
+      <div class="ctrl"><div class="ctrl-lab">Distancia <b id="leDistVal">5.0</b></div>
+        <input type="range" class="teal" id="leDist" min="1.5" max="9" step="0.1" value="5"></div>
+    </div>
   </main>
-  <button id="fabAdd" title="Añadir luz">
-    <svg viewBox="1330 1380 290 290" xmlns="http://www.w3.org/2000/svg"><path fill="#0a0b0e" d="M1601.7,1547c-1.6-3.2-4.9-5.2-8.5-5.2h-34.1l25.9-37c2-2.9,2.3-6.7.6-9.8-1.6-3.1-4.9-5.1-8.4-5.1h-84.2v-84.2c0-5.2-4.3-9.5-9.5-9.5s-9.5,4.3-9.5,9.5v84.2h-84.2c-5.2,0-9.5,4.3-9.5,9.5s4.3,9.5,9.5,9.5h84.2v84.2c0,5.2,4.3,9.5,9.5,9.5s9.5-4.3,9.5-9.5v-84.2h66l-25.9,37c-2,2.9-2.3,6.7-.6,9.8,1.6,3.1,4.9,5.1,8.4,5.1h33.5l-56.7,76.7c-3.1,4.2-2.2,10.2,2,13.3,1.7,1.3,3.7,1.9,5.6,1.9,2.9,0,5.8-1.3,7.6-3.8l67.9-91.8c2.1-2.9,2.5-6.7.8-9.9Z"/></svg>
-    <span class="ct" id="fabCt">0</span>
-  </button>
-  <div id="padLights">
-    <div id="padPills"></div>
-  </div>
-  <div id="padQuick">
-    <div class="vrange"><input type="range" class="teal" id="padIntensity" min="0" max="5" step="0.01" value="1.6"></div>
-    <span class="pqlab">Intens.</span>
-  </div>
 
   <!-- ============ RIGHT: MATERIAL / RENDER / VISTA ============ -->
   <aside class="panel right" id="panelR">
@@ -1262,7 +1398,11 @@
     renderLightSwitcher();
     var fc=byId('fabCt'); if(fc) fc.textContent=lights.length;
     var fab=byId('fabAdd'); if(fab) fab.classList.toggle('hide', lights.length>=MAX);
-    placePadSun();
+    placePadSun(); placeDeskSun();
+  }
+  function pillTextColor(hex){
+    var r=parseInt(hex.substr(1,2),16), g=parseInt(hex.substr(3,2),16), b=parseInt(hex.substr(5,2),16);
+    return (r*0.299+g*0.587+b*0.114)>160 ? '#0a0b0e':'#fff';
   }
   var armDel=false;
   function renderLightSwitcher(){
@@ -1272,10 +1412,12 @@
       var pill=document.createElement('div');
       pill.className='pill'+(i===selIdx?' sel':'');
       pill.style.background=rec.color;
+      pill.style.color=pillTextColor(rec.color);
       pill.innerHTML=(i+1)+'<span class="x'+(armDel&&i===selIdx?' armed':'')+'">✕</span>';
       pill.onclick=function(){
         if(i===selIdx && armDel){ armDel=false; removeLight(i); return; }
         selIdx=i; armDel=false; renderLightsUI();
+        openLightEdit(i);
       };
       head.appendChild(pill);
     });
@@ -1290,6 +1432,7 @@
     }
     renderPadCluster();
   }
+  var trashSVG='<svg viewBox="0 0 3000 3000" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M1814.15,155.51V0h-628.3v155.51H211.4v510.4h2577.2V155.51h-974.45ZM446.77,3001h2106.5V949.37H446.77v2051.63ZM1684.33,1326.64h361.97v1360.86h-361.97v-1360.86ZM953.65,1326.64h362.02v1360.86h-362.02v-1360.86Z"/></svg>';
   function renderPadCluster(){
     var wrap=byId('padLights'), pills=byId('padPills'); if(!wrap||!pills) return;
     var empty = lights.length===0;
@@ -1297,32 +1440,27 @@
     var pq=byId('padQuick'); if(pq) pq.classList.toggle('empty', empty);
     pills.innerHTML='';
     lights.forEach(function(rec,i){
+      var row=document.createElement('div');
+      row.className='pp-row';
       var pp=document.createElement('div');
       pp.className='pp'+(i===selIdx?' sel':'');
       pp.style.background=rec.color;
-      pp.innerHTML=(i+1)+'<span class="x'+(armDel&&i===selIdx?' armed':'')+'">✕</span>';
-      // long-press arms delete on this pill; tap then confirms / switches
-      var lpTimer=null, lpFired=false;
-      pp.addEventListener('pointerdown',function(e){
-        lpFired=false;
-        if(lights.length<=1) return; // can't delete the only light
-        lpTimer=setTimeout(function(){
-          lpFired=true; selIdx=i; armDel=true; renderLightsUI();
-          if(navigator.vibrate) navigator.vibrate(15);
-        },480);
-      });
-      function lpCancel(){ if(lpTimer){ clearTimeout(lpTimer); lpTimer=null; } }
-      pp.addEventListener('pointermove',lpCancel);
-      pp.addEventListener('pointerup',lpCancel);
-      pp.addEventListener('pointercancel',lpCancel);
+      pp.style.color=pillTextColor(rec.color);
+      pp.textContent=(i+1);
       pp.addEventListener('click',function(e){
-        if(lpFired){ e.preventDefault(); e.stopPropagation(); lpFired=false; return; }
-        if(i===selIdx && armDel){ armDel=false; removeLight(i); return; }
         selIdx=i; armDel=false; renderLightsUI();
+        openLightEdit(i);
       });
-      pills.appendChild(pp);
+      if(i===selIdx && lights.length>1){
+        var del=document.createElement('button');
+        del.className='pp-del';
+        del.innerHTML=trashSVG;
+        del.onclick=function(e){ e.stopPropagation(); removeLight(i); };
+        row.appendChild(del);
+      }
+      row.appendChild(pp);
+      pills.appendChild(row);
     });
-    // sync quick intensity slider to selected light
     var q=byId('padIntensity'), rec=lights[selIdx];
     if(q && rec){ q.value=rec.intensity; }
   }
@@ -1335,7 +1473,45 @@
       var b = inp.parentElement.querySelector('b');
       if(b) b.textContent = (k==='az'||k==='el')?Math.round(rec[k]):(k==='dist'?rec[k].toFixed(1):rec[k].toFixed(2));
     });
+    if(touchLayout()) syncLightEdit(i);
   }
+
+  /* ============ mobile light editor ============ */
+  var lePanel=byId('lightEdit');
+  function openLightEdit(i){
+    if(!lePanel) return;
+    var rec=lights[i]; if(!rec) return;
+    byId('leColorIn').value=rec.color;
+    byId('leColor').style.background=rec.color;
+    byId('leType').value=rec.type;
+    byId('leInt').value=rec.intensity;
+    byId('leIntVal').textContent=rec.intensity.toFixed(2);
+    byId('leDist').value=rec.dist;
+    byId('leDistVal').textContent=rec.dist.toFixed(1);
+    var sb=byId('leShadow'); sb.classList.toggle('on',rec.shadow);
+    lePanel.classList.add('open');
+  }
+  function syncLightEdit(i){
+    if(!lePanel||!lePanel.classList.contains('open')) return;
+    var rec=lights[i]; if(!rec) return;
+    byId('leInt').value=rec.intensity;
+    byId('leIntVal').textContent=rec.intensity.toFixed(2);
+    byId('leDist').value=rec.dist;
+    byId('leDistVal').textContent=rec.dist.toFixed(1);
+  }
+  function closeLightEdit(){ if(lePanel) lePanel.classList.remove('open'); }
+  byId('leClose').onclick=closeLightEdit;
+  byId('leColorIn').oninput=function(){ var rec=lights[selIdx]; if(!rec) return;
+    rec.color=this.value; byId('leColor').style.background=this.value; applyLight(rec); renderLightsUI(); };
+  byId('leType').onchange=function(){ changeType(selIdx,this.value); openLightEdit(selIdx); };
+  byId('leShadow').onclick=function(){ var rec=lights[selIdx]; if(!rec) return;
+    rec.shadow=!rec.shadow; applyLight(rec); this.classList.toggle('on',rec.shadow); };
+  byId('leInt').oninput=function(){ var rec=lights[selIdx]; if(!rec) return;
+    rec.intensity=parseFloat(this.value); byId('leIntVal').textContent=rec.intensity.toFixed(2);
+    applyLight(rec); syncLightCard(selIdx); };
+  byId('leDist').oninput=function(){ var rec=lights[selIdx]; if(!rec) return;
+    rec.dist=parseFloat(this.value); byId('leDistVal').textContent=rec.dist.toFixed(1);
+    applyLight(rec); syncLightCard(selIdx); };
 
   /* ============ presets ============ */
   var PRESETS = {
@@ -1616,7 +1792,7 @@
   var ptrs={}, last=null, pinchD=0;
   function pinchDist(){ var k=Object.keys(ptrs); var a=ptrs[k[0]],b=ptrs[k[1]]; return Math.hypot(a.x-b.x,a.y-b.y); }
   stage.addEventListener('pointerdown',function(e){
-    if(e.target.closest('#views')||e.target.closest('#lightpad')) return;
+    if(e.target.closest('#views')||e.target.closest('#lightpad')||e.target.closest('#padLights')||e.target.closest('#padQuick')||e.target.closest('#fabAdd')||e.target.closest('#lightEdit')) return;
     stage.setPointerCapture&&stage.setPointerCapture(e.pointerId);
     ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
     if(Object.keys(ptrs).length===1) last={x:e.clientX,y:e.clientY};
@@ -1669,7 +1845,7 @@
   document.querySelectorAll('.sec').forEach(function(sec){ secHomes.push({el:sec, parent:sec.parentNode}); });
   var TAB_SECS={ luz:['env','presets','lights','amb'], mat:['mat'], esc:['render','view'] };
   var SCUTS={
-    luz:[['presets','◐','Esquemas'],['lights','☀','Fuentes'],['env','⛶','Entorno'],['amb','◑','Ambiente']],
+    luz:[['presets','◐','Esquemas'],['env','⛶','Entorno']],
     mat:[['mat','◐','Shader']],
     esc:[['render','⛶','Render'],['view','◳','Vista']]
   };
@@ -1696,37 +1872,37 @@
   function showTab(tab){
     curTab=tab;
     secHomes.forEach(function(h){ stash.appendChild(h.el); });
-    var first=true;
-    TAB_SECS[tab].forEach(function(n){ var s=secByName(n); if(s){ s.classList.toggle('closed', !first); first=false; sheetBody.appendChild(s);} });
+    TAB_SECS[tab].forEach(function(n){ var s=secByName(n); if(s){ s.classList.remove('closed'); sheetBody.appendChild(s);} });
     sheetBody.scrollTop=0;
     sheetBody.className=tab;
     renderScuts();
     document.querySelectorAll('#mtabs button').forEach(function(b){ b.classList.toggle('active', b.dataset.tab===tab); });
-    var fab=byId('fabAdd'); if(fab) fab.style.display=touchLayout()?'flex':'none';
   }
   function restoreDesktop(){ secHomes.forEach(function(h){ h.parent.appendChild(h.el); });
-    sheetBody.className=''; var bar=byId('scut'); if(bar) bar.innerHTML='';
-    var fab=byId('fabAdd'); if(fab) fab.style.display='none'; }
+    sheetBody.className=''; var bar=byId('scut'); if(bar) bar.innerHTML=''; }
   document.querySelectorAll('#mtabs button').forEach(function(b){
     b.onclick=function(){ showTab(b.dataset.tab); if(snapState===0) setSheet(1); };
   });
 
   /* ----- sheet snap (peek / half / full) ----- */
-  var snapState=0, liveVisible=84;
+  var snapState=0, liveVisible=104;
   function snapH(){ var vv=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
-    var H=vv*0.88; return [84, Math.round(H*0.52), Math.round(H*0.97)]; }
+    var H=vv*0.88; return [104, Math.round(H*0.52), Math.round(H*0.97)]; }
   function setSheet(state){
     snapState=state; var h=snapH(); liveVisible=h[state];
     sheet.style.setProperty('--peek', liveVisible+'px');
     sheet.classList.toggle('expanded', state>0);
+    if(state>0) closeLightEdit();
   }
-  var grab=byId('grab'), dragY=null, startV=0;
+  var grab=byId('grab'), dragY=null, startV=0, grabMoved=false;
   grab.addEventListener('pointerdown',function(e){ grab.setPointerCapture(e.pointerId);
-    dragY=e.clientY; startV=liveVisible; sheet.classList.add('dragging'); });
+    dragY=e.clientY; startV=liveVisible; grabMoved=false; sheet.classList.add('dragging'); });
   grab.addEventListener('pointermove',function(e){ if(dragY===null) return;
+    if(Math.abs(e.clientY-dragY)>5) grabMoved=true;
     liveVisible=Math.max(60, Math.min(window.innerHeight*0.9, startV+(dragY-e.clientY)));
     sheet.style.setProperty('--peek', liveVisible+'px'); });
-  function grabUp(){ if(dragY===null) return; dragY=null; sheet.classList.remove('dragging');
+  function grabUp(){ if(dragY===null) return; var wasDrag=grabMoved; dragY=null; sheet.classList.remove('dragging');
+    if(!wasDrag){ setSheet(snapState>0?0:1); return; }
     var h=snapH(), best=0, bd=1e9; h.forEach(function(v,i){ var d=Math.abs(liveVisible-v); if(d<bd){bd=d;best=i;} });
     setSheet(best); }
   grab.addEventListener('pointerup',grabUp); grab.addEventListener('pointercancel',grabUp);
@@ -1756,6 +1932,25 @@
   pad.addEventListener('pointermove',function(e){ if(padDrag){ e.stopPropagation(); padFromXY(e.clientX,e.clientY);} });
   function padUp(e){ padDrag=false; } pad.addEventListener('pointerup',padUp); pad.addEventListener('pointercancel',padUp);
 
+  /* ----- desktop radar pad ----- */
+  var dPad=byId('deskPad'), dSun=byId('deskSun'), dDrag=false;
+  function placeDeskSun(){ if(!dSun) return; var rec=lights[selIdx]; if(!rec) return;
+    var nx=Math.max(-1,Math.min(1, rec.az/150)), ny=Math.max(-1,Math.min(1, -rec.el/80));
+    dSun.style.left=((nx*0.5+0.5)*100)+'%'; dSun.style.top=((ny*0.5+0.5)*100)+'%';
+    dSun.style.background=rec.color;
+    dSun.style.boxShadow='0 0 14px 3px '+rec.color+'88, 0 0 0 3px '+rec.color+'22';
+  }
+  function dPadFromXY(cx,cy){ var rec=lights[selIdx]; if(!rec) return;
+    var r=dPad.getBoundingClientRect();
+    var nx=Math.max(-1,Math.min(1, ((cx-r.left)/r.width)*2-1));
+    var ny=Math.max(-1,Math.min(1, ((cy-r.top)/r.height)*2-1));
+    rec.az=Math.round(nx*150); rec.el=Math.round(-ny*80);
+    applyLight(rec); syncLightCard(selIdx); placeDeskSun(); placePadSun();
+  }
+  dPad.addEventListener('pointerdown',function(e){ e.stopPropagation(); dPad.setPointerCapture(e.pointerId); dDrag=true; dPadFromXY(e.clientX,e.clientY); });
+  dPad.addEventListener('pointermove',function(e){ if(dDrag){ e.stopPropagation(); dPadFromXY(e.clientX,e.clientY);} });
+  function dPadUp(){ dDrag=false; } dPad.addEventListener('pointerup',dPadUp); dPad.addEventListener('pointercancel',dPadUp);
+
   /* ============ resize / layout switching ============ */
   function touchLayout(){ return window.innerWidth<=1024; }
   function currentW(){
@@ -1765,7 +1960,7 @@
     if(!panelR.classList.contains('collapsed')) w-=300;
     return Math.max(120,w);
   }
-  function currentH(){ return window.innerHeight; }
+  function currentH(){ return (window.visualViewport&&window.visualViewport.height)||window.innerHeight; }
   function resize(){
     var w=currentW(), h=currentH();
     renderer.setSize(w,h,true);
@@ -1785,6 +1980,7 @@
   }
   window.addEventListener('resize',applyLayout);
   window.addEventListener('orientationchange',function(){ setTimeout(applyLayout,120); });
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize',applyLayout); }
 
   /* ============ loop ============ */
   function tick(now){
