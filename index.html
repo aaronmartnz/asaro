@@ -274,6 +274,7 @@
   /* mobile */
   /* ===== touch-mode chrome (hidden on desktop) ===== */
   #sheet,#stash{display:none}
+  #arcRing,#arcDrag{display:none}
 
   @media(max-width:1024px){
     /* desktop panels become hidden; their sections get re-parented into the sheet */
@@ -290,11 +291,11 @@
     #views button{padding:8px 10px;font-size:10.5px}
 
     /* ===== light pad ===== */
-    #lightpad{display:block;position:fixed;right:16px;top:64px;width:128px;height:128px;
+    #lightpad{display:block;position:fixed;right:24px;top:64px;width:128px;height:128px;
       border-radius:50%;z-index:14;touch-action:none;cursor:pointer;
       background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.08), rgba(10,11,14,.58));
       border:1px solid var(--line);backdrop-filter:blur(10px);
-      box-shadow:0 10px 34px rgba(0,0,0,.5)}
+      box-shadow:0 10px 34px rgba(0,0,0,.5);overflow:visible}
     #lightpad .ring{position:absolute;inset:12px;border-radius:50%;border:1px dashed rgba(255,255,255,.15)}
     #lightpad .ring2{position:absolute;inset:34px;border-radius:50%;border:1px solid rgba(255,255,255,.07)}
     #lightpad .cross{position:absolute;background:rgba(255,255,255,.09)}
@@ -307,7 +308,7 @@
       font-size:8px;letter-spacing:1.5px;color:var(--dim2)}
 
     /* ===== FAB add-light (under the light pad, top-right) ===== */
-    #fabAdd{display:flex;position:fixed;right:10px;top:216px;
+    #fabAdd{display:flex;position:fixed;right:18px;top:216px;
       width:56px;height:56px;border-radius:50%;z-index:26;align-items:center;justify-content:center;
       background:var(--amber);color:#0a0b0e;border:0;cursor:pointer;
       box-shadow:0 8px 24px rgba(255,230,161,.4),0 2px 8px rgba(0,0,0,.45);
@@ -321,7 +322,7 @@
       border:1.5px solid var(--amber)}
 
     /* ===== floating light cluster: vertical column of pills under the FAB ===== */
-    #padLights{display:flex;position:fixed;right:10px;top:288px;z-index:15;
+    #padLights{display:flex;position:fixed;right:18px;top:288px;z-index:15;
       flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
     #padLights.empty{display:none}
     #padPills{display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:auto}
@@ -332,14 +333,29 @@
     #padPills .pp.sel{transform:scale(1.1);box-shadow:0 10px 26px rgba(0,0,0,.6)}
     .pp-del{width:42px;height:42px;padding:10px}
 
-    /* ===== vertical intensity slider (separate, lower-right) ===== */
-    #padQuick{position:fixed;right:10px;top:auto;bottom:calc(var(--peek,84px) + 24px);z-index:15;
-      display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:auto;touch-action:none}
-    #padQuick.empty{display:none}
-    #padQuick .vrange{width:48px;height:170px;border-radius:24px}
-    #padQuick .vrange input[type=range]{width:140px}
-    #padQuick .vrange input[type=range]::-webkit-slider-thumb{width:22px;height:22px}
-    #padQuick .vrange input[type=range]::-moz-range-thumb{width:22px;height:22px}
+    /* ===== vertical intensity slider: hidden on mobile (arc ring replaces it) ===== */
+    #padQuick{display:none!important}
+
+    /* ===== circular arc intensity ring around lightpad ===== */
+    #arcRing{display:block;position:absolute;
+      top:-16px;left:-16px;width:calc(100% + 32px);height:calc(100% + 32px);
+      z-index:2;pointer-events:none;overflow:visible}
+    #arcDrag{display:block}
+    #arcRing .arc-bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:5;
+      stroke-linecap:round;stroke-dasharray:531.81 46.24;
+      transform:rotate(-90deg);transform-origin:50% 50%}
+    #arcRing .arc-fill{fill:none;stroke:var(--orange);stroke-width:5;
+      stroke-linecap:round;stroke-dasharray:531.81;stroke-dashoffset:531.81;
+      transform:rotate(-90deg);transform-origin:50% 50%;
+      filter:drop-shadow(0 0 6px var(--orange));transition:stroke .15s}
+    #arcRing .arc-handle{fill:#e9ecf2;stroke:rgba(0,0,0,.3);stroke-width:1.5;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));pointer-events:auto;
+      cursor:grab;touch-action:none}
+    #arcRing .arc-handle:active{cursor:grabbing}
+    #arcDrag{position:absolute;top:-22px;left:-22px;
+      width:calc(100% + 44px);height:calc(100% + 44px);
+      z-index:3;border-radius:50%;pointer-events:none;touch-action:none}
+    #arcDrag.active{pointer-events:auto}
 
     /* ===== smart light switcher: size override in touch ===== */
     #lightsHead .pill{width:34px;height:34px}
@@ -453,9 +469,6 @@
     #fabAdd{width:50px;height:50px;top:172px;right:10px}
     #padLights{top:236px;right:10px}
     #padPills .pp{width:50px;height:50px;font-size:18px}
-    #padQuick{top:auto;bottom:8%;right:10px}
-    #padQuick .vrange{height:100px}
-    #padQuick .vrange input[type=range]{width:100px}
   }
 </style>
 </head>
@@ -554,10 +567,16 @@
       <button data-view="top">Cenital</button>
     </div>
     <div id="lightpad" title="Arrastra para mover la luz">
+      <svg id="arcRing" viewBox="0 0 200 200">
+        <circle class="arc-bg" cx="100" cy="100" r="92" />
+        <circle class="arc-fill" cx="100" cy="100" r="92" />
+        <circle class="arc-handle" cx="100" cy="8" r="14" />
+      </svg>
       <div class="ring"></div>
       <div class="ring2"></div>
       <div class="cross cx"></div><div class="cross cy"></div>
       <div class="sun" id="padSun"></div>
+      <div id="arcDrag"></div>
       <div class="lab">LUZ KEY</div>
     </div>
     <button id="fabAdd" title="Añadir luz">
@@ -1920,7 +1939,8 @@
     padSun.style.background=rec.color;
     padSun.style.boxShadow='0 0 18px 4px '+rec.color+'99, 0 0 0 4px '+rec.color+'33';
     if(padLab) padLab.textContent='LUZ '+(selIdx+1);
-    var q=byId('padIntensity'); if(q) q.value=rec.intensity; }
+    var q=byId('padIntensity'); if(q) q.value=rec.intensity;
+    if(typeof syncArcRing==='function') syncArcRing(); }
   function padFromXY(cx,cy){ var rec=lights[selIdx]; if(!rec) return;
     var r=pad.getBoundingClientRect();
     var nx=Math.max(-1,Math.min(1, ((cx-r.left)/r.width)*2-1));
@@ -1931,6 +1951,59 @@
   pad.addEventListener('pointerdown',function(e){ e.stopPropagation(); pad.setPointerCapture(e.pointerId); padDrag=true; padFromXY(e.clientX,e.clientY); });
   pad.addEventListener('pointermove',function(e){ if(padDrag){ e.stopPropagation(); padFromXY(e.clientX,e.clientY);} });
   function padUp(e){ padDrag=false; } pad.addEventListener('pointerup',padUp); pad.addEventListener('pointercancel',padUp);
+
+  /* ----- mobile arc ring: circular intensity control ----- */
+  var arcFill=document.querySelector('#arcRing .arc-fill');
+  var arcHandle=document.querySelector('#arcRing .arc-handle');
+  var arcDragEl=byId('arcDrag');
+  var ARC_R=92, ARC_C=2*Math.PI*ARC_R, ARC_GAP=0.08;
+  var arcUsable=ARC_C*(1-ARC_GAP);
+  var arcDragging=false;
+  function arcAngleFromXY(cx,cy){
+    var r=pad.getBoundingClientRect();
+    var mx=r.left+r.width/2, my=r.top+r.height/2;
+    var a=Math.atan2(cy-my, cx-mx);
+    var norm=a+Math.PI/2; if(norm<0) norm+=2*Math.PI;
+    if(norm>2*Math.PI*(1-ARC_GAP)) norm=2*Math.PI*(1-ARC_GAP);
+    return norm;
+  }
+  function arcSetIntensity(angle){
+    var rec=lights[selIdx]; if(!rec) return;
+    var maxA=2*Math.PI*(1-ARC_GAP);
+    var t=Math.max(0,Math.min(1, angle/maxA));
+    rec.intensity=Math.round(t*5*100)/100;
+    applyLight(rec); syncLightCard(selIdx); syncArcRing();
+  }
+  function syncArcRing(){
+    if(!arcFill||!arcHandle) return;
+    var rec=lights[selIdx];
+    if(!rec){arcFill.style.strokeDashoffset=arcUsable; arcHandle.setAttribute('cx','100'); arcHandle.setAttribute('cy','8'); return;}
+    var t=Math.max(0,Math.min(1, rec.intensity/5));
+    var len=t*arcUsable;
+    arcFill.style.strokeDashoffset=(arcUsable-len);
+    arcFill.style.stroke=rec.color;
+    arcFill.style.filter='drop-shadow(0 0 6px '+rec.color+')';
+    var a=t*2*Math.PI*(1-ARC_GAP)-Math.PI/2;
+    var hx=100+ARC_R*Math.cos(a), hy=100+ARC_R*Math.sin(a);
+    arcHandle.setAttribute('cx',hx);
+    arcHandle.setAttribute('cy',hy);
+  }
+  arcHandle.addEventListener('pointerdown',function(e){
+    if(!touchLayout()) return;
+    e.stopPropagation(); e.preventDefault();
+    arcDragging=true; arcDragEl.classList.add('active');
+    arcDragEl.setPointerCapture&&arcDragEl.setPointerCapture(e.pointerId);
+    arcSetIntensity(arcAngleFromXY(e.clientX,e.clientY));
+  });
+  arcDragEl.addEventListener('pointermove',function(e){
+    if(!arcDragging) return;
+    e.stopPropagation(); e.preventDefault();
+    arcSetIntensity(arcAngleFromXY(e.clientX,e.clientY));
+  });
+  function arcUp(){arcDragging=false;arcDragEl.classList.remove('active');}
+  arcDragEl.addEventListener('pointerup',arcUp);
+  arcDragEl.addEventListener('pointercancel',arcUp);
+  window.addEventListener('pointerup',function(){if(arcDragging)arcUp();});
 
   /* ----- desktop radar pad ----- */
   var dPad=byId('deskPad'), dSun=byId('deskSun'), dDrag=false;
