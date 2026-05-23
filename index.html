@@ -290,8 +290,10 @@
       background:rgba(12,13,17,.62);box-shadow:0 6px 24px rgba(0,0,0,.4)}
     #views button{padding:8px 10px;font-size:10.5px}
 
-    /* ===== light pad ===== */
-    #lightpad{display:block;position:fixed;right:24px;top:64px;width:128px;height:128px;
+    /* ===== light pad (bottom-right, above the sheet) ===== */
+    #lightpad{display:block;position:fixed;right:24px;
+      bottom:calc(var(--peek,84px) + env(safe-area-inset-bottom,0px) + 24px);
+      width:128px;height:128px;
       border-radius:50%;z-index:14;touch-action:none;cursor:pointer;
       background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.08), rgba(10,11,14,.58));
       border:1px solid var(--line);backdrop-filter:blur(10px);
@@ -307,8 +309,8 @@
     #lightpad .lab{position:absolute;left:0;right:0;bottom:-17px;text-align:center;
       font-size:8px;letter-spacing:1.5px;color:var(--dim2)}
 
-    /* ===== FAB add-light (under the light pad, top-right) ===== */
-    #fabAdd{display:flex;position:fixed;right:18px;top:216px;
+    /* ===== FAB add-light (top-right, under views) ===== */
+    #fabAdd{display:flex;position:fixed;right:18px;top:64px;
       width:56px;height:56px;border-radius:50%;z-index:26;align-items:center;justify-content:center;
       background:var(--amber);color:#0a0b0e;border:0;cursor:pointer;
       box-shadow:0 8px 24px rgba(255,230,161,.4),0 2px 8px rgba(0,0,0,.45);
@@ -321,8 +323,8 @@
       font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;
       border:1.5px solid var(--amber)}
 
-    /* ===== floating light cluster: vertical column of pills under the FAB ===== */
-    #padLights{display:flex;position:fixed;right:18px;top:288px;z-index:15;
+    /* ===== floating light pills (under FAB, top-right) ===== */
+    #padLights{display:flex;position:fixed;right:18px;top:132px;z-index:15;
       flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
     #padLights.empty{display:none}
     #padPills{display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:auto}
@@ -465,9 +467,9 @@
   }
   @media(max-width:1024px) and (orientation:landscape){
     #sheet{height:94vh}
-    #lightpad{top:56px;width:104px;height:104px}
-    #fabAdd{width:50px;height:50px;top:172px;right:10px}
-    #padLights{top:236px;right:10px}
+    #lightpad{top:auto;bottom:calc(var(--peek,84px) + env(safe-area-inset-bottom,0px) + 16px);width:104px;height:104px;right:16px}
+    #fabAdd{width:50px;height:50px;top:56px;right:10px}
+    #padLights{top:118px;right:10px}
     #padPills .pp{width:50px;height:50px;font-size:18px}
   }
 </style>
