@@ -263,7 +263,7 @@
     #sheet{display:flex;flex-direction:column;position:fixed;left:0;right:0;bottom:0;
       z-index:24;background:var(--panel);backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
       border:1px solid var(--line);border-bottom:0;border-radius:0;
-      box-shadow:0 -24px 70px rgba(0,0,0,.55);height:88vh;
+      box-shadow:0 -24px 70px rgba(0,0,0,.55);height:88vh;height:88dvh;
       transform:translateY(calc(100% - var(--peek,84px)));
       transition:transform .4s cubic-bezier(.32,.72,0,1)}
     #sheet.dragging{transition:none}
@@ -297,7 +297,8 @@
     #scut .sc:active{transform:scale(.94)}
     #scut .sc .d{font-size:11px}
     #scut:empty{display:none}
-    #sheetBody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:2px 2px 30px;
+    #sheetBody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+      padding:2px 2px calc(40px + env(safe-area-inset-bottom,0px));
       scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
     #sheetBody .sec:first-child{border-top:0}
     #sheetBody .sec-c{padding-left:18px;padding-right:18px}
@@ -1275,18 +1276,27 @@
       pp.className='pp'+(i===selIdx?' sel':'');
       pp.style.background=rec.color;
       pp.innerHTML=(i+1)+'<span class="x'+(armDel&&i===selIdx?' armed':'')+'">✕</span>';
-      pp.onclick=function(){
+      // long-press arms delete on this pill; tap then confirms / switches
+      var lpTimer=null, lpFired=false;
+      pp.addEventListener('pointerdown',function(e){
+        lpFired=false;
+        if(lights.length<=1) return; // can't delete the only light
+        lpTimer=setTimeout(function(){
+          lpFired=true; selIdx=i; armDel=true; renderLightsUI();
+          if(navigator.vibrate) navigator.vibrate(15);
+        },480);
+      });
+      function lpCancel(){ if(lpTimer){ clearTimeout(lpTimer); lpTimer=null; } }
+      pp.addEventListener('pointermove',lpCancel);
+      pp.addEventListener('pointerup',lpCancel);
+      pp.addEventListener('pointercancel',lpCancel);
+      pp.addEventListener('click',function(e){
+        if(lpFired){ e.preventDefault(); e.stopPropagation(); lpFired=false; return; }
         if(i===selIdx && armDel){ armDel=false; removeLight(i); return; }
         selIdx=i; armDel=false; renderLightsUI();
-      };
+      });
       pills.appendChild(pp);
     });
-    if(lights.length>1){
-      var t=document.createElement('div'); t.className='trash';
-      t.textContent=armDel?'↩':'🗑'; t.title='Eliminar luz seleccionada';
-      t.onclick=function(){ armDel=!armDel; renderLightSwitcher(); };
-      pills.appendChild(t);
-    }
     // sync quick intensity slider to selected light
     var q=byId('padIntensity'), rec=lights[selIdx];
     if(q && rec){ q.value=rec.intensity; }
@@ -1611,6 +1621,13 @@
         TAB_SECS[curTab].forEach(function(n){ var s=secByName(n); if(s&&s!==sec) s.classList.add('closed'); });
       }
       sec.classList.toggle('closed');
+      // on mobile: scroll the opened section to the top of the sheet body so its content is visible
+      if(touchLayout() && willOpen && sec.parentNode===sheetBody){
+        setTimeout(function(){
+          var top = sec.offsetTop - sheetBody.offsetTop;
+          sheetBody.scrollTo({top:Math.max(0,top), behavior:'smooth'});
+        }, 40);
+      }
     };
   });
 
@@ -1671,7 +1688,8 @@
 
   /* ----- sheet snap (peek / half / full) ----- */
   var snapState=0, liveVisible=84;
-  function snapH(){ var H=window.innerHeight*0.88; return [84, Math.round(H*0.52), Math.round(H*0.97)]; }
+  function snapH(){ var vv=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
+    var H=vv*0.88; return [84, Math.round(H*0.52), Math.round(H*0.97)]; }
   function setSheet(state){
     snapState=state; var h=snapH(); liveVisible=h[state];
     sheet.style.setProperty('--peek', liveVisible+'px');
