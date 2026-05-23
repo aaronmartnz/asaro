@@ -290,10 +290,14 @@
       background:rgba(12,13,17,.62);box-shadow:0 6px 24px rgba(0,0,0,.4)}
     #views button{padding:8px 10px;font-size:10.5px}
 
+    /* ===== responsive sizes for right-side controls ===== */
+    :root{--pad-size:clamp(96px,18vw,128px);--pill-size:clamp(42px,8vw,56px);--fab-size:clamp(42px,8vw,56px);--pad-m:clamp(16px,3vw,24px)}
+
     /* ===== light pad (bottom-right, above the sheet) ===== */
-    #lightpad{display:block;position:fixed;right:24px;top:auto;
-      bottom:calc(var(--peek,84px) + env(safe-area-inset-bottom,0px) + 24px);
-      width:128px;height:128px;
+    #lightpad{display:block;position:fixed;top:auto;
+      right:var(--pad-m);
+      bottom:calc(var(--peek,84px) + env(safe-area-inset-bottom,0px) + 28px + var(--pad-m));
+      width:var(--pad-size);height:var(--pad-size);
       border-radius:50%;z-index:14;touch-action:none;cursor:pointer;
       background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.08), rgba(10,11,14,.58));
       border:1px solid var(--line);backdrop-filter:blur(10px);
@@ -310,12 +314,13 @@
       font-size:8px;letter-spacing:1.5px;color:var(--dim2)}
 
     /* ===== FAB add-light (top-right, under views) ===== */
-    #fabAdd{display:flex;position:fixed;right:18px;top:64px;
-      width:56px;height:56px;border-radius:50%;z-index:26;align-items:center;justify-content:center;
+    #fabAdd{display:flex;position:fixed;right:var(--pad-m);top:64px;
+      width:var(--fab-size);height:var(--fab-size);border-radius:50%;z-index:26;
+      align-items:center;justify-content:center;
       background:var(--amber);color:#0a0b0e;border:0;cursor:pointer;
       box-shadow:0 8px 24px rgba(255,230,161,.4),0 2px 8px rgba(0,0,0,.45);
       transition:transform .16s, opacity .2s;line-height:1}
-    #fabAdd svg{width:42px;height:42px;display:block}
+    #fabAdd svg{width:75%;height:75%;display:block}
     #fabAdd:active{transform:scale(.9)}
     #fabAdd.hide{transform:scale(0);pointer-events:none}
     #fabAdd .ct{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;padding:0 4px;
@@ -324,16 +329,17 @@
       border:1.5px solid var(--amber)}
 
     /* ===== floating light pills (under FAB, top-right) ===== */
-    #padLights{display:flex;position:fixed;right:18px;top:132px;z-index:15;
-      flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+    #padLights{display:flex;position:fixed;right:var(--pad-m);
+      top:calc(64px + var(--fab-size) + 10px);z-index:15;
+      flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
     #padLights.empty{display:none}
-    #padPills{display:flex;flex-direction:column;gap:10px;align-items:flex-end;pointer-events:auto}
-    #padPills .pp{width:56px;height:56px;border-radius:50%;border:0;
+    #padPills{display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:auto}
+    #padPills .pp{width:var(--pill-size);height:var(--pill-size);border-radius:50%;border:0;
       display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';
-      font-size:20px;font-weight:600;cursor:pointer;position:relative;
+      font-size:clamp(16px,3.5vw,20px);font-weight:600;cursor:pointer;position:relative;
       box-shadow:0 6px 18px rgba(0,0,0,.5);transition:transform .14s, box-shadow .14s}
     #padPills .pp.sel{transform:scale(1.1);box-shadow:0 10px 26px rgba(0,0,0,.6)}
-    .pp-del{width:42px;height:42px;padding:10px}
+    .pp-del{width:calc(var(--pill-size) * 0.75);height:calc(var(--pill-size) * 0.75);padding:8px}
 
     /* ===== vertical intensity slider: hidden on mobile (arc ring replaces it) ===== */
     #padQuick{display:none!important}
@@ -466,11 +472,8 @@
     .pbody,.sec-c{-webkit-overflow-scrolling:touch}
   }
   @media(max-width:1024px) and (orientation:landscape){
+    :root{--pad-size:clamp(80px,14vw,104px);--pill-size:clamp(36px,6vw,46px);--fab-size:clamp(36px,6vw,46px);--pad-m:12px}
     #sheet{height:94vh}
-    #lightpad{top:auto;bottom:calc(var(--peek,84px) + env(safe-area-inset-bottom,0px) + 16px);width:104px;height:104px;right:16px}
-    #fabAdd{width:50px;height:50px;top:56px;right:10px}
-    #padLights{top:118px;right:10px}
-    #padPills .pp{width:50px;height:50px;font-size:18px}
   }
 </style>
 </head>
