@@ -1775,13 +1775,23 @@
     side:{theta:90*D2R, phi:Math.PI/2},
     top:{theta:0, phi:0.16}
   };
-  function goView(name){
+  var viewFlipped={three:false, side:false};
+  function goView(name, forceFlip){
     var v=VIEWS[name];
+    var theta=v.theta;
+    if(name==='three'||name==='side'){
+      if(forceFlip!==undefined) viewFlipped[name]=forceFlip;
+      else if(curView===name) viewFlipped[name]=!viewFlipped[name];
+      else viewFlipped[name]=viewFlipped[name]||false;
+      if(viewFlipped[name]) theta=-theta;
+    }
     anim = {t0:performance.now(), dur:420,
-      th0:cam.theta, ph0:cam.phi, th1:v.theta, ph1:v.phi};
+      th0:cam.theta, ph0:cam.phi, th1:theta, ph1:v.phi};
+    curView=name;
     document.querySelectorAll('#views button').forEach(function(b){b.classList.toggle('active',b.dataset.view===name);});
     document.querySelectorAll('#viewChips .chip').forEach(function(b){b.classList.toggle('active',b.dataset.view===name);});
   }
+  var curView='three';
   // view chips (right panel) mirror the floating buttons
   var viewChips=document.getElementById('viewChips');
   [['front','Frontal'],['three','3/4'],['side','Perfil'],['top','Cenital']].forEach(function(p,i){
