@@ -1821,8 +1821,18 @@
   });
   document.querySelectorAll('#views button').forEach(function(b){ b.onclick=function(){goView(b.dataset.view);}; });
 
-  toggle('tgOrtho', false, function(on){ useOrtho=on; camera = on?orthoCam:perspCam; if(on) frustum(); var fb=byId('fabOrtho'); if(fb) fb.classList.toggle('active',on); });
-  (function(){ var fb=byId('fabOrtho'); if(fb) fb.onclick=function(){ byId('tgOrtho').click(); }; })();
+  function setOrtho(on){
+    useOrtho=on; camera = on?orthoCam:perspCam; if(on) frustum();
+    var fb=byId('fabOrtho'); if(fb) fb.classList.toggle('active',on);
+    var tg=byId('tgOrtho'); if(tg) tg.classList.toggle('on',on);
+  }
+  (function(){
+    var tg=byId('tgOrtho'); if(tg) tg.onclick=function(){ setOrtho(!useOrtho); };
+    var fb=byId('fabOrtho'); if(fb) fb.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      setOrtho(!useOrtho);
+    });
+  })();
   byId('resetCam').onclick=function(){ goView('three'); cam.radius=4.6; };
   var addCount=0;
   function spawnLight(){
