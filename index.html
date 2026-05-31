@@ -446,6 +446,15 @@
     #sheetBody #addLight{display:none}
     #sheetBody .sec[data-sec="lights"]{display:none}
     #sheetBody .sec[data-sec="amb"]{display:none}
+    /* hide view section: ortho FAB up top covers it */
+    #sheetBody .sec[data-sec="view"]{display:none}
+    /* render: pack Mostrar suelo + Ver focos + Color de fondo on one row */
+    #sheetBody .mb-trio{display:flex;gap:6px;padding:6px 0}
+    #sheetBody .mb-trio > .row{flex:1;flex-direction:column;align-items:center;justify-content:center;
+      gap:6px;padding:8px 4px;background:rgba(255,255,255,.03);
+      border:1px solid var(--line);border-radius:6px;min-width:0}
+    #sheetBody .mb-trio > .row .lab{font-size:10px;text-align:center;line-height:1.15;
+      letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 
     /* hide desktop radar on mobile */
     #deskPad{display:none}
@@ -666,9 +675,11 @@
           <div class="row"><div class="lab">Sombras</div><div class="toggle on" id="tgShadow"></div></div>
           <div class="ctrl" id="softCtrl"><div class="ctrl-lab">Suavidad sombra <b id="softVal">4</b></div>
             <input type="range" class="teal" id="soft" min="0" max="10" step="1" value="4"></div>
-          <div class="row"><div class="lab">Mostrar suelo</div><div class="toggle on" id="tgGround"></div></div>
-          <div class="row"><div class="lab">Ver focos</div><div class="toggle teal on" id="tgGizmo"></div></div>
-          <div class="row"><div class="lab">Color de fondo</div><div class="swatch" style="background:#0a0b0e"><input type="color" id="bgColor" value="#0a0b0e"></div></div>
+          <div class="mb-trio">
+            <div class="row"><div class="lab">Mostrar suelo</div><div class="toggle on" id="tgGround"></div></div>
+            <div class="row"><div class="lab">Ver focos</div><div class="toggle teal on" id="tgGizmo"></div></div>
+            <div class="row"><div class="lab">Color de fondo</div><div class="swatch" style="background:#0a0b0e"><input type="color" id="bgColor" value="#0a0b0e"></div></div>
+          </div>
         </div>
       </div>
 
