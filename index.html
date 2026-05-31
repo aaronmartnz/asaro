@@ -1847,7 +1847,7 @@
   var ptrs={}, last=null, pinchD=0;
   function pinchDist(){ var k=Object.keys(ptrs); var a=ptrs[k[0]],b=ptrs[k[1]]; return Math.hypot(a.x-b.x,a.y-b.y); }
   stage.addEventListener('pointerdown',function(e){
-    if(e.target.closest('#views')||e.target.closest('#lightpad')||e.target.closest('#padLights')||e.target.closest('#padQuick')||e.target.closest('#fabAdd')||e.target.closest('#lightEdit')) return;
+    if(e.target.closest('#views')||e.target.closest('#lightpad')||e.target.closest('#padLights')||e.target.closest('#padQuick')||e.target.closest('#fabAdd')||e.target.closest('#fabOrtho')||e.target.closest('#lightEdit')) return;
     stage.setPointerCapture&&stage.setPointerCapture(e.pointerId);
     ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
     if(Object.keys(ptrs).length===1) last={x:e.clientX,y:e.clientY};
